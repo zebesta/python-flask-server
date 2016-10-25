@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request, url_for, jsonify, redirect
+from flask import Flask, flash, request, url_for, jsonify, redirect
 from werkzeug.utils import secure_filename
-from flask.ext.cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+app.secret_key = 'dev'
 
 #set up the uploads folder
 UPLOAD_FOLDER = './uploads'
@@ -56,8 +57,9 @@ def upload_file(imageid):
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect('/test/')
+            filelocation = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print(filelocation)
+            return 'upload complete'
     return
 
 if __name__ == "__main__":
