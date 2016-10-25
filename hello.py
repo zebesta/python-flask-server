@@ -49,6 +49,34 @@ def upload_file(imageid):
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+        print(request.form['type'])
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            filelocation = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print(filelocation)
+            return 'upload complete'
+    return
+
+@app.route('/audio', methods=['POST'])
+@cross_origin()
+def upload_audio():
+    if request.method == 'POST':
+        # check if the post request has the file part and the type part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        if 'type' not in request.form:
+            flash('No type part')
+            return redirect(request.url)
+        file = request.files['file']
+        type = request.form['type']
+        print(type)
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
