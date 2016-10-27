@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, request, url_for, jsonify, redirect
+from flask import Flask, flash, request, url_for, jsonify, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 
@@ -39,7 +39,7 @@ def test():
     return jsonify(data)
 
 
-@app.route('/image/<imageid>', methods=['POST'])
+@app.route('/image/<imageid>', methods=['POST', 'GET'])
 @cross_origin()
 def upload_file(imageid):
     print('You are looking at ' +imageid)
@@ -61,7 +61,10 @@ def upload_file(imageid):
             filelocation = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             print(filelocation)
             return 'upload complete'
+    if request.method == 'GET':
+        return send_file("images", "3M_bikes.jpg")
     return
+
 
 @app.route('/audio', methods=['POST'])
 @cross_origin()
@@ -89,6 +92,9 @@ def upload_audio():
             print(filelocation)
             return 'upload complete'
     return
+
+    #TODO content streaming in flask is a thing that can work
+
 
 if __name__ == "__main__":
     app.run()
