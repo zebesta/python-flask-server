@@ -61,12 +61,12 @@ def upload_file(imageid):
             filelocation = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             print(filelocation)
             return 'upload complete'
-    if request.method == 'GET':
+    elif request.method == 'GET':
         return send_from_directory("images", "3M_bikes.jpg")
     return
 
 
-@app.route('/audio', methods=['POST'])
+@app.route('/audio', methods=['POST', 'GET'])
 @cross_origin()
 def upload_audio():
     if request.method == 'POST':
@@ -91,6 +91,8 @@ def upload_audio():
             filelocation = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             print(filelocation)
             return 'upload complete'
+    elif request.method == 'GET':
+        return send_from_directory("uploads", "the_books.mp3")
     return
 
     #TODO content streaming in flask is a thing that can work
