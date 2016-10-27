@@ -62,7 +62,7 @@ def upload_file(imageid):
             print(filelocation)
             return 'upload complete'
     if request.method == 'GET':
-        return send_file("images", "3M_bikes.jpg")
+        return send_from_directory("images", "3M_bikes.jpg")
     return
 
 
